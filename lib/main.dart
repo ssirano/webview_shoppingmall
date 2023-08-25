@@ -27,12 +27,14 @@ class _ShoppingWebViewState extends State<ShoppingWebView> {
   WebViewController? _webViewController;
   bool isLoading = true;
 
-  Future<void> scanBarcode() async{
-    String barcode = await FlutterBarcodeScanner.scanBarcode("#ff6666", "cancel", true, ScanMode.BARCODE,);
-    if(barcode != '-1'){
+  Future<void> scanBarcode() async {
+    String barcode = await FlutterBarcodeScanner.scanBarcode(
+      "#ff6666", "cancel", true, ScanMode.BARCODE,);
+    if (barcode != '-1') {
       _webViewController?.loadUrl("https://www.google.com/search?q=$barcode");
     }
   }
+
   final List<String> urls = [
     'https://www.amazon.com/',
     'https://www.ebay.com/',
@@ -44,68 +46,68 @@ class _ShoppingWebViewState extends State<ShoppingWebView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title : Text('Simple Shopping Mall App'),
+        title: Text('Simple Shopping Mall App'),
         actions: [
           IconButton(icon: Icon(Icons.search),
-          onPressed: scanBarcode,
+            onPressed: scanBarcode,
           ),
           IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () async {
-          if (await _webViewController!.canGoBack()){
-            _webViewController!.goBack();
-            }
-          }
+              icon: Icon(Icons.arrow_back),
+              onPressed: () async {
+                if (await _webViewController!.canGoBack()) {
+                  _webViewController!.goBack();
+                }
+              }
           ),
-    IconButton(
-    icon: Icon(Icons.arrow_forward),
-    onPressed: () async {
-    if (_webViewController != null) {
-    if (await _webViewController!.canGoForward()) {
-    _webViewController!.goForward();
-    }
-    }
-    },
-    ),
-    IconButton(icon: Icon(Icons.refresh),
-    onPressed: () {
-      _webViewController?.reload();
-    },
-    ),
-    ],
-      ),
-        body: Stack(
-    children: [
-      WebView(
-        initialUrl : 'https://www.google.com',
-      onWebViewCreated: (WebViewController webViewController){
-          _webViewController = webViewController;
-        },
-        onPageFinished: (finish) {
-          setState(() {
-            isLoading = false;
-          });
-    },
-    ),
-    isLoading ? Center(child: CircularProgressIndicator()) : Container(),
-    ],
-    ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Amazon'),
-          BottomNavigationBarItem(icon: Icon(Icons.business), label: 'eBay'),
-          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Walmart'),
+          IconButton(
+            icon: Icon(Icons.arrow_forward),
+            onPressed: () async {
+              if (_webViewController != null) {
+                if (await _webViewController!.canGoForward()) {
+                  _webViewController!.goForward();
+                }
+              }
+            },
+          ),
+          IconButton(icon: Icon(Icons.refresh),
+            onPressed: () {
+              _webViewController?.reload();
+            },
+          ),
         ],
-    onTap:(index) {
-      print("Attempting to load URL: ${urls[index]}");
+      ),
+      body: Stack(
+        children: [
+          WebView(
+            initialUrl: 'https://www.google.com',
+            onWebViewCreated: (WebViewController webViewController) {
+              _webViewController = webViewController;
+            },
+            onPageFinished: (finish) {
+              setState(() {
+                isLoading = false;
+              });
+            },
+          ),
+          isLoading ? Center(child: CircularProgressIndicator()) : Container(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Amazon'),
+            BottomNavigationBarItem(icon: Icon(Icons.business), label: 'eBay'),
+            BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Walmart'),
+          ],
+          onTap: (index) {
+            print("Attempting to load URL: ${urls[index]}");
 
-      setState(() {
-            _currentIndex = index;
-            isLoading = true; //로딩 인디케이터를 보이게 설정
-            _webViewController?.loadUrl(urls[_currentIndex]);
-          });
-    }
+            setState(() {
+              _currentIndex = index;
+              isLoading = true; //로딩 인디케이터를 보이게 설정
+              _webViewController?.loadUrl(urls[_currentIndex]);
+            });
+          }
       ),
     );
   }
