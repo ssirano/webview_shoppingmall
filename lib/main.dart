@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:webview_shoppingmall/screens/splash_screen.dart';
 
 
 void main() {
   runApp(MyApp());
 }
 
+
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Simple Shopping Mall App',
-      home: ShoppingWebView(),
+      title: 'Siple Shopping Mall App',
+      home: SplashScreen(),
     );
   }
 }
+
 
 class ShoppingWebView extends StatefulWidget {
 
@@ -69,7 +73,7 @@ class _ShoppingWebViewState extends State<ShoppingWebView> {
               }
             },
           ),
-          IconButton(icon: Icon(Icons.refresh),
+          IconButton(icon: NewWidget(),
             onPressed: () {
               _webViewController?.reload();
             },
@@ -113,3 +117,13 @@ class _ShoppingWebViewState extends State<ShoppingWebView> {
   }
 }
 
+class NewWidget extends StatelessWidget {
+  const NewWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(Icons.refresh);
+  }
+}
